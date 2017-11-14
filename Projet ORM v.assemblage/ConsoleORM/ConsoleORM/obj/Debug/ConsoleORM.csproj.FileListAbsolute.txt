@@ -1,0 +1,18 @@
+C:\Users\Mougamadou\Desktop\Projet ORM\ConsoleORM\ConsoleORM\bin\Debug\ConsoleORM.exe.config
+C:\Users\Mougamadou\Desktop\Projet ORM\ConsoleORM\ConsoleORM\bin\Debug\ConsoleORM.exe
+C:\Users\Mougamadou\Desktop\Projet ORM\ConsoleORM\ConsoleORM\bin\Debug\ConsoleORM.pdb
+C:\Users\Mougamadou\Desktop\Projet ORM\ConsoleORM\ConsoleORM\bin\Debug\MySql.Data.dll
+C:\Users\Mougamadou\Desktop\Projet ORM\ConsoleORM\ConsoleORM\obj\Debug\ConsoleORM.csprojResolveAssemblyReference.cache
+C:\Users\Mougamadou\Desktop\Projet ORM\ConsoleORM\ConsoleORM\obj\Debug\ConsoleORM.csproj.CoreCompileInputs.cache
+C:\Users\Mougamadou\Desktop\Projet ORM\ConsoleORM\ConsoleORM\obj\Debug\ConsoleORM.exe
+C:\Users\Mougamadou\Desktop\Projet ORM\ConsoleORM\ConsoleORM\obj\Debug\ConsoleORM.pdb
+C:\Users\Mougamadou\Desktop\Projet ORM v1\ConsoleORM\ConsoleORM\bin\Debug\ConsoleORM.exe.config
+C:\Users\Mougamadou\Desktop\Projet ORM v1\ConsoleORM\ConsoleORM\bin\Debug\ConsoleORM.exe
+C:\Users\Mougamadou\Desktop\Projet ORM v1\ConsoleORM\ConsoleORM\bin\Debug\ConsoleORM.pdb
+C:\Users\Mougamadou\Desktop\Projet ORM v1\ConsoleORM\ConsoleORM\bin\Debug\MySql.Data.dll
+C:\Users\Mougamadou\Desktop\Projet ORM v1\ConsoleORM\ConsoleORM\obj\Debug\ConsoleORM.csprojResolveAssemblyReference.cache
+C:\Users\Mougamadou\Desktop\Projet ORM v1\ConsoleORM\ConsoleORM\obj\Debug\ConsoleORM.csproj.CoreCompileInputs.cache
+C:\Users\Mougamadou\Desktop\Projet ORM v1\ConsoleORM\ConsoleORM\obj\Debug\ConsoleORM.exe
+C:\Users\Mougamadou\Desktop\Projet ORM v1\ConsoleORM\ConsoleORM\obj\Debug\ConsoleORM.pdb
+C:\Users\Mougamadou\Desktop\Projet ORM v1\ConsoleORM\ConsoleORM\bin\Debug\Mono.Security.dll
+C:\Users\Mougamadou\Desktop\Projet ORM v1\ConsoleORM\ConsoleORM\bin\Debug\Npgsql.dll
