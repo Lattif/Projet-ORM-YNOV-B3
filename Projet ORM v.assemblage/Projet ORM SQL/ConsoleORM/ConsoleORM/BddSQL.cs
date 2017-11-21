@@ -21,7 +21,13 @@ namespace ConsoleORM
         private void InitConnexion()
         {
             // Création de la chaîne de connexion
-            string connectionString = "SERVER=localhost; DATABASE=bdd_contact; UID=root; PASSWORD=";
+
+            // Connexion générique (Auth SqlServer) DECOMMENTER : 
+            // string connectionString = "SERVER=localhost; DATABASE=bdd_contact; UID=root; PASSWORD=";
+
+            // Connexion spécifique Benco (Auth Windows) DECOMMENTER : 
+            string connectionString = "Data Source=(local);Initial Catalog=bdd_contact;Integrated Security=True";
+
             this.connection = new SqlConnection(connectionString);
         }
 
