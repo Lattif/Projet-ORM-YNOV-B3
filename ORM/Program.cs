@@ -60,7 +60,28 @@ namespace ORM
             //postgresql.DeleteStatement(PostgreSqlProvider, PostgreSqlConnection, deletequery);
             postgresql.SelectStatement(PostgreSqlProvider, PostgreSqlConnection, selectquery);
         }
+        
+          private static void ConnexionSqlServer()
+        {
+            //Définition de la connexion et de la référence nécessaire pour Sql server
+            string SqlConnection = "Server = ASLAM-PC; Database = appliORM; Trusted_Connection = True";
+            string SqlProvider = "System.Data.SqlClient";
 
+            //Requêtes Sql server
+            string selectquery = "SELECT * FROM Contact1";
+            string insertquery = "INSERT INTO Contact1 (nom, prenom) VALUES('nomdefamille', 'prenom')";
+            string updatequery = "UPDATE Contact1 SET nom = 'nomdefamillechage' WHERE prenom = 'prenom'";
+            string deletequery = "DELETE FROM Contact1";
+
+            //Instance de la classe BDD pour appeler chaque méthode faisant référence à une requête
+            BDD sql = new BDD();
+            //sql.InsertStatement(SqlProvider, SqlConnection, insertquery);
+            //sql.UpdateStatement(SqlProvider, SqlConnection, updatequery);
+            //sql.DeleteStatement(SqlProvider, SqlConnection, deletequery);
+            sql.SelectStatement(SqlProvider, SqlConnection, selectquery);
+
+        }
+    
         private static void afficherMenu()
         {
             //Affichage du Menu démarrage
