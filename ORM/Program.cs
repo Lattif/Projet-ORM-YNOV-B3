@@ -167,6 +167,174 @@ namespace ORM
 
         }
 
+        public static DataTable ObjectToDataTable(object o)
+        {
+            //Creation d'une datatable contenant les attributs d'une classe
+
+            DataTable dataClass = new DataTable(o.GetType().Name);
+            DataRow rows = dataClass.NewRow();
+            dataClass.Rows.Add(rows);
+
+            //Ajout des colonnes et des lignes de la datatable en récupérant les noms des propriétés
+            o.GetType().GetProperties().ToList().ForEach(f =>
+            {
+                try
+                {
+                    f.GetValue(o, null);
+                    dataClass.Columns.Add(f.Name, f.PropertyType);
+                    dataClass.Rows[0][f.Name] = f.GetValue(o, null);
+                }
+                catch { }
+            });
+            return dataClass;
+        }
+
+        //Genère une Requete SQL de création de table à partir d'une DataTable
+        public static string GenerateReqCreate(DataTable dataClass)
+        {
+            StringBuilder sql = new StringBuilder();
+            StringBuilder alterSql = new StringBuilder();
+
+            sql.AppendFormat("CREATE TABLE [{0}] (", dataClass.TableName);
+
+            for (int i = 0; i < dataClass.Columns.Count; i++)
+            {
+                bool isNumeric = false;
+                bool usesColumnDefault = true;
+
+                sql.AppendFormat("\n\t[{0}]", dataClass.Columns[i].ColumnName);
+
+                //Recupère le type des paramètres de la classe pour définir le type en SQL
+                switch (dataClass.Columns[i].DataType.ToString().ToUpper())
+                {
+                    case "SYSTEM.INT16":
+                        sql.Append(" smallint");
+                        isNumeric = true;
+                        break;
+                    case "SYSTEM.INT32":
+                        sql.Append(" int");
+                        isNumeric = true;
+                        break;
+                    case "SYSTEM.INT64":
+                        sql.Append(" bigint");
+                        isNumeric = true;
+                        break;
+                    case "SYSTEM.DATETIME":
+                        sql.Append(" datetime");
+                        usesColumnDefault = false;
+                        break;
+                    case "SYSTEM.STRING":
+                        sql.AppendFormat(" nvarchar({0})", dataClass.Columns[i].MaxLength);
+                        break;
+                    case "SYSTEM.SINGLE":
+                        sql.Append(" single");
+                        isNumeric = true;
+                        break;
+                    case "SYSTEM.DOUBLE":
+                        sql.Append(" double");
+                        isNumeric = true;
+                        break;
+                    case "SYSTEM.DECIMAL":
+                        sql.AppendFormat(" decimal(18, 6)");
+                        isNumeric = true;
+                        break;
+                    default:
+                        sql.AppendFormat(" nvarchar({0})", dataClass.Columns[i].MaxLength);
+                        break;
+                }
+
+                if (dataClass.Columns[i].AutoIncrement)
+                {
+                    sql.AppendFormat(" IDENTITY({0},{1})",
+                        dataClass.Columns[i].AutoIncrementSeed,
+                        dataClass.Columns[i].AutoIncrementStep);
+                }
+                else
+                {
+
+                    if (dataClass.Columns[i].DefaultValue != null)
+                    {
+                        if (usesColumnDefault)
+                        {
+                            if (isNumeric)
+                            {
+                                alterSql.AppendFormat("\nALTER TABLE {0} ADD CONSTRAINT [DF_{0}_{1}]  DEFAULT ({2}) FOR [{1}];",
+                                    dataClass.TableName,
+                                    dataClass.Columns[i].ColumnName,
+                                    dataClass.Columns[i].DefaultValue);
+                            }
+                            else
+                            {
+                                alterSql.AppendFormat("\nALTER TABLE {0} ADD CONSTRAINT [DF_{0}_{1}]  DEFAULT ('{2}') FOR [{1}];",
+                                    dataClass.TableName,
+                                    dataClass.Columns[i].ColumnName,
+                                    dataClass.Columns[i].DefaultValue);
+                            }
+                        }
+                        else
+                        {
+
+                            try
+                            {
+                                System.Xml.XmlDocument xml = new System.Xml.XmlDocument();
+
+                                xml.LoadXml(dataClass.Columns[i].Caption);
+
+                                alterSql.AppendFormat("\nALTER TABLE {0} ADD CONSTRAINT [DF_{0}_{1}]  DEFAULT ({2}) FOR [{1}];",
+                                    dataClass.TableName,
+                                    dataClass.Columns[i].ColumnName,
+                                    xml.GetElementsByTagName("defaultValue")[0].InnerText);
+                            }
+                            catch
+                            {
+
+                            }
+                        }
+                    }
+                }
+
+                if (!dataClass.Columns[i].AllowDBNull)
+                {
+                    sql.Append(" NOT NULL");
+                }
+
+                sql.Append(",");
+            }
+
+            if (dataClass.PrimaryKey.Length > 0)
+            {
+                StringBuilder primaryKeySql = new StringBuilder();
+
+                primaryKeySql.AppendFormat("\n\tCONSTRAINT PK_{0} PRIMARY KEY (", dataClass.TableName);
+
+                for (int i = 0; i < dataClass.PrimaryKey.Length; i++)
+                {
+                    primaryKeySql.AppendFormat("{0},", dataClass.PrimaryKey[i].ColumnName);
+                }
+
+                primaryKeySql.Remove(primaryKeySql.Length - 1, 1);
+                primaryKeySql.Append(")");
+
+                sql.Append(primaryKeySql);
+            }
+            else
+            {
+                sql.Remove(sql.Length - 1, 1);
+            }
+
+            sql.AppendFormat("\n);\n{0}", alterSql.ToString());
+
+            return sql.ToString();
+        }
+
+        //Genere une requête SQL pour inserer une classe dans une BD en tant que table
+        public String classToSQL(object o)
+        {
+            DataTable dt = ObjectToDataTable(o);
+            String requete = GenerateReqCreate(dt);
+            return requete;
+        }
+
         private static void afficherMenu()
         {
             //Affichage du Menu démarrage
